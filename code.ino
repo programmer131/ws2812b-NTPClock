@@ -9,14 +9,15 @@
 #include <ESP8266HTTPUpdateServer.h>
 //const char ssid[] = "xxx";  //  your network SSID (name)
 //const char pass[] = "xxx";       // your network password
-//const uint16_t PixelCount = 76; // this example assumes 4 pixels, making it smaller will cause a failure
+//const uint16_t PixelCount = 76; 
+const int timeZone = 5;     // Pakistan Time, adjust as per your country
 
 const char* host = "esp8266";
 ESP8266WebServer httpServer(80);
 ESP8266HTTPUpdateServer httpUpdater;
-const uint8_t PixelPin = 2;  // make sure to set this to the correct pin, ignored for Esp8266
+const uint8_t PixelPin = 2;  // ignored for Esp8266
 #define colorSaturation 250
-NeoPixelAnimator animations(1); // only ever need 2 animations
+NeoPixelAnimator animations(1); 
 NeoPixelBus<NeoGrbFeature, NeoEsp8266Dma800KbpsMethod> strip(PixelCount, PixelPin);
 RgbColor red(colorSaturation, 0, 0);
 RgbColor greenLessIntense(0, 60, 0);
@@ -30,7 +31,6 @@ int count=0;
 int stripPixels[PixelCount]={0};
 
 static const char ntpServerName[] = "us.pool.ntp.org";
-const int timeZone = 5;     // Central European Time
 WiFiUDP Udp;
 unsigned int localPort = 8888;  // local port to listen for UDP packets
 time_t getNtpTime();
