@@ -94,7 +94,8 @@ void sendNTPpacket(IPAddress &address)
   Udp.endPacket();
 }
 
-
+static bool SecPosUpdated=0;
+static int previousSecPixle=-1;
 void setStrip()
 {
   secDisplayPixel=second()*(PixelCount-1)/60.0;
@@ -120,14 +121,33 @@ void setStrip()
     looCount+=5; 
   }
   strip.SetPixelColor(hourDisplayPixel, red);   
-  strip.SetPixelColor(minDisplayPixel, blue);  
-  strip.SetPixelColor(secDisplayPixel, greenHighIntense);
- 
-  secDisplayPixel--;
-  if(secDisplayPixel<0)
+  strip.SetPixelColor(minDisplayPixel, blue);
+  if(secDisplayPixel!=previousSecPixle)
+    SecPosUpdated=1;
+  else
+    SecPosUpdated=0;
+
+  previousSecPixle = secDisplayPixel;
+  if(SecPosUpdated==0)
+   {
+    strip.SetPixelColor(secDisplayPixel, greenHighIntense);
+     secDisplayPixel--;
+    if(secDisplayPixel<0)
+      secDisplayPixel=(PixelCount-1);
+     strip.SetPixelColor(secDisplayPixel, greenLessIntense);    
+   }
+  else
+  {
+    strip.SetPixelColor(secDisplayPixel, greenLessIntense);    
+    secDisplayPixel--;
+    if(secDisplayPixel<0)
     secDisplayPixel=(PixelCount-1);
-   strip.SetPixelColor(secDisplayPixel, greenLessIntense);
-}
+    secDisplayPixel--;
+    if(secDisplayPixel<0)
+    secDisplayPixel=(PixelCount-1);
+    strip.SetPixelColor(secDisplayPixel, greenLessIntense);  
+  }
+ }
 
 void LoopAnimUpdate(const AnimationParam& param)
 {
