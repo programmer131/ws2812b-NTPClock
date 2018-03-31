@@ -16,3 +16,6 @@ This is how it should work
 
 https://youtu.be/ZIkvrkxV0ZM
 
+need this library as well
+https://github.com/Makuna/NeoPixelBus
+
